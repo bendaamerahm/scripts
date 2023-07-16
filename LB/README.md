@@ -14,25 +14,25 @@ This script enables load balancing using iptables. It sets up rules to distribut
 
 2. Make the script executable:
    ```shell
-   chmod +x iptables_load_balancing.sh
+   chmod +x LB.sh
    ```
 
 3. Run the script with the following command to set up load balancing:
    ```shell
-   sudo ./iptables_load_balancing.sh -v <VIP> -p <PORT> -b "<BACKEND1> <BACKEND2> ..."
+   sudo ./LB.sh -v <VIP> -p <PORT> -b "<BACKEND1> <BACKEND2> ..."
    ```
    Replace `<VIP>` with the Virtual IP address you want to use, `<PORT>` with the desired port number, and `<BACKEND1> <BACKEND2> ...` with the IP addresses of the backend servers separated by spaces.
 
    Example:
    ```shell
-   sudo ./iptables_load_balancing.sh -v 192.168.1.100 -p 80 -b "192.168.1.10 192.168.1.11" 
+   sudo ./LB.sh -v 192.168.1.100 -p 80 -b "192.168.1.10 192.168.1.11" 
    ```
 
    This will enable load balancing for incoming traffic on the specified VIP and port, distributing it across the provided backend servers.
 
 4. To remove the load balancing rules, run the script with the `--remove` option:
    ```shell
-   sudo ./iptables_load_balancing.sh --remove
+   sudo ./LB.sh --remove
    ```
    This will remove the load balancing rules and restore the previous iptables configuration.
 
