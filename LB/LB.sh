@@ -18,6 +18,15 @@ function display_help {
   echo "  -b, --backends <IPs>   Specify the backend server IP addresses, separated by spaces"
   echo "      --remove           Remove load balancing rules"
   echo
+  echo "Usage Examples:"
+  echo
+  echo "1. Set up load balancing:"
+  echo "   $0 -v <VIP> -p <PORT> -b \"<BACKEND1> <BACKEND2> ...\""
+  echo "   Example: $0 -v 192.168.1.100 -p 80 -b \"192.168.1.10 192.168.1.11\""
+  echo
+  echo "2. Remove load balancing rules:"
+  echo "   $0 --remove"
+  echo "   Example: $0 --remove"
 }
 
 # Enable IP forwarding
