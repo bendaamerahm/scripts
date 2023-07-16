@@ -55,9 +55,17 @@ function set_up_load_balancing {
   # Assign the VIP to the load balancing chain
   sudo iptables -t nat -A LB_CHAIN -d $VIP -j RETURN
 
-  # Distribute traffic to backend servers
-  for backend in "${BACKENDS[@]}"; do
-    sudo iptables -t nat -A LB_CHAIN -p tcp -m tcp -d $backend --dport $PORT -j DNAT --to-destination $backend:$PORT
+  # Get the total number of backends
+  total_backends=${#BACKENDS[@]}
+
+  # Load balancing using packet count
+  for ((i = 0; i < total_backends; i++)); do
+    backend="${BACKENDS[$i]}"
+    next_index=$(( (i + 1) % total_backends ))
+    next_backend="${BACKENDS[$next_index]}"
+
+    # Set up load balancing rules with packet count
+    sudo iptables -t nat -A LB_CHAIN -p tcp -m tcp -d $backend --dport $PORT -m statistic --mode nth --every 2 --packet 0 -j DNAT --to-destination $next_backend:$PORT
   done
 
   # Enable SNAT for outgoing traffic
@@ -118,7 +126,7 @@ function process_args {
         BACKENDS=($2)
         shift 2
         ;;
-      --remove|rm)
+      --remove)
         remove_load_balancing
         exit 0
         ;;
